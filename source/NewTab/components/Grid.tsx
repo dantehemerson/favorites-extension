@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 
 interface ItemType {
@@ -6,7 +6,7 @@ interface ItemType {
   name: string;
 }
 
-export const BasicFunction: FC = (props) => {
+export function Grid() {
   const [state, setState] = useState<ItemType[]>([
     { id: 1, name: "shrek" },
     { id: 2, name: "fiona" },
@@ -30,7 +30,7 @@ export const BasicFunction: FC = (props) => {
   return (
     <ReactSortable list={state} setList={setState} animation={150} ghostClass="sortable-grid-ghost-class">
       {state.map((item) => (
-        <div className="w-15 h-15 bg-red-500 inline-block m-2" key={item.id}>Item {item.id}</div>
+        <div className="w-15 h-15 bg-gray-500 inline-block m-2" key={item.id}>Item {item.id}</div>
       ))}
     </ReactSortable>
   );

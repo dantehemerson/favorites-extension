@@ -2,5 +2,5 @@
 @plugin '@tailwindcss/forms';
 
 .sortable-grid-ghost-class {
-  background: blue;
+  background: #d0dbf0b0;
 }

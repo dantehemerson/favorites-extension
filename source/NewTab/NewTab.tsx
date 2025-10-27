@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { BasicFunction } from './components/Grid';
+import { Grid } from './components/Grid';
 
 const NewTab: React.FC = () => {
   return (
-    <BasicFunction />
+    <Grid />
   );
 };
 
