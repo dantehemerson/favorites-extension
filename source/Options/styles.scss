@@ -1,0 +1,8 @@
+@use "../styles/fonts";
+@use "../styles/reset";
+@use "../styles/variables";
+
+body {
+  color: variables.$black;
+  background-color: variables.$greyWhite;
+}
