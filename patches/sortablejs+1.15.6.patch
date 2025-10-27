@@ -1,0 +1,15 @@
+diff --git a/node_modules/sortablejs/modular/sortable.esm.js b/node_modules/sortablejs/modular/sortable.esm.js
+index 1adf24d..9784883 100644
+--- a/node_modules/sortablejs/modular/sortable.esm.js
++++ b/node_modules/sortablejs/modular/sortable.esm.js
+@@ -2383,6 +2383,10 @@ Sortable.utils = {
+   cancelNextTick: _cancelNextTick,
+   detectDirection: _detectDirection,
+   getChild: getChild,
++  getRect: getRect,
++  setRect: setRect,
++  unsetRect: unsetRect,
++  dispatchEvent: dispatchEvent,
+   expando: expando
+ };
+ 
