@@ -4,3 +4,7 @@
 .sortable-grid-ghost-class {
   background: #d0dbf0b0;
 }
+
+.sortable-grid-selected-class {
+  background: yellow;
+}

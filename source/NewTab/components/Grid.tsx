@@ -1,5 +1,13 @@
+import clsx from "clsx";
 import React, { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
+import Sortable from "sortablejs";
+
+
+import MultiDragPro from "../../sortablejs-plugins/MultiDragPro";
+
+// @ts-ignore
+Sortable.mount(new MultiDragPro());
 
 interface ItemType {
   id: number;
@@ -28,10 +36,31 @@ export function Grid() {
   ]);
 
   return (
-    <ReactSortable list={state} setList={setState} animation={150} ghostClass="sortable-grid-ghost-class">
+    <ReactSortable
+      multiDrag={true}
+      selectedClass="sortable-grid-selected-class"
+      list={state}
+      setList={setState}
+      animation={150}
+      ghostClass="sortable-grid-ghost-class"
+    >
       {state.map((item) => (
-        <div className="w-15 h-15 bg-gray-500 inline-block m-2" key={item.id}>Item {item.id}</div>
+        <div
+          onClick={(event) => {
+            console.log("clicked", item.id);
+            event.preventDefault();
+            event.stopPropagation();
+            console.log("event", event);
+          }}
+          className={clsx(
+            "w-15 h-15 bg-blue-500 inline-block m-2",
+            item.id === 1 ? "sortable-grid-selected-class" : undefined
+          )}
+          key={item.id}
+        >
+          Item {item.id}
+        </div>
       ))}
     </ReactSortable>
   );
-};
+}
