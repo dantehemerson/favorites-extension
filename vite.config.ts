@@ -93,8 +93,7 @@ export default defineConfig(({ mode }) => {
                 input: {
                     // For UI pages, use the HTML file as the entry.
                     // Vite will find the <script> tag inside and bundle it.
-                    popup: path.resolve(sourcePath, 'Popup/popup.html'),
-                    options: path.resolve(sourcePath, 'Options/options.html'),
+                    newtab: path.resolve(sourcePath, 'NewTab/newtab.html'),
                     // For script-only parts, use the TS file directly.
                     background: path.resolve(sourcePath, 'Background/index.ts'),
                     contentScript: path.resolve(sourcePath, 'ContentScript/index.ts'),

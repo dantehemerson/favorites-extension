@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import Options from './Options';
-import './styles.scss';
+import NewTab from './NewTab';
+import '../styles/global.css';
 
-const container = document.getElementById('options-root');
+const container = document.getElementById('root');
 
 if (!container) {
     throw new Error("Could not find root container to mount the app");
@@ -13,6 +13,6 @@ if (!container) {
 const root = ReactDOM.createRoot(container);
 root.render(
     <React.StrictMode>
-        <Options />
+        <NewTab />
     </React.StrictMode>
 );
