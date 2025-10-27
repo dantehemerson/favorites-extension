@@ -13,11 +13,9 @@ const {
 	setRect,
 	unsetRect,
 	matrix,
+	dispatchEvent,
 	expando
 } = Sortable.utils;
-
-
-// import dispatchEvent from 'sortablejs/src/EventDispatcher.js';
 
 let multiDragElements = [],
 	multiDragClones = [],
@@ -321,14 +319,13 @@ function MultiDragPlugin() {
 
 				if (!~multiDragElements.indexOf(dragEl)) {
 					multiDragElements.push(dragEl);
-					dispatchSortableEvent('select');
-					// dispatchEvent({
-					// 	sortable,
-					// 	rootEl,
-					// 	name: 'select',
-					// 	targetEl: dragEl,
-					// 	originalEvent: evt
-					// });
+					dispatchEvent({
+						sortable,
+						rootEl,
+						name: 'select',
+						targetEl: dragEl,
+						originalEvent: evt
+					});
 
 					// Modifier activated, select from last to dragEl
 					if (evt.shiftKey && lastMultiDragSelect && sortable.el.contains(lastMultiDragSelect)) {
@@ -363,14 +360,13 @@ function MultiDragPlugin() {
 								toggleClass(children[i], options.selectedClass, true);
 								multiDragElements.push(children[i]);
 
-								dispatchSortableEvent('select');
-								// // dispatchEvent({
-								// 	sortable,
-								// 	rootEl,
-								// 	name: 'select',
-								// 	targetEl: children[i],
-								// 	originalEvent: evt
-								// });
+								dispatchEvent({
+									sortable,
+									rootEl,
+									name: 'select',
+									targetEl: children[i],
+									originalEvent: evt
+								});
 							}
 						}
 					} else {
@@ -381,14 +377,13 @@ function MultiDragPlugin() {
 				} else {
 					multiDragElements.splice(multiDragElements.indexOf(dragEl), 1);
 					lastMultiDragSelect = null;
-					dispatchSortableEvent('deselect');
-					// // dispatchEvent({
-					// 	sortable,
-					// 	rootEl,
-					// 	name: 'deselect',
-					// 	targetEl: dragEl,
-					// 	originalEvent: evt
-					// });
+					dispatchEvent({
+						sortable,
+						rootEl,
+						name: 'deselect',
+						targetEl: dragEl,
+						originalEvent: evt
+					});
 				}
 			}
 
@@ -505,14 +500,13 @@ function MultiDragPlugin() {
 				let el = multiDragElements[0];
 				toggleClass(el, this.options.selectedClass, false);
 				multiDragElements.shift();
-				dispatchSortableEvent('deselect');
-				// // dispatchEvent({
-				// 	sortable: this.sortable,
-				// 	rootEl: this.sortable.el,
-				// 	name: 'deselect',
-				// 	targetEl: el,
-				// 	originalEvent: evt
-				// });
+				dispatchEvent({
+					sortable: this.sortable,
+					rootEl: this.sortable.el,
+					name: 'deselect',
+					targetEl: el,
+					originalEvent: evt
+				});
 			}
 		},
 
