@@ -24,7 +24,7 @@ const selecto = new Selecto({
 	 // The container for keydown and keyup events
 	 keyContainer: window,
 	 // The rate at which the target overlaps the drag area to be selected. (default: 100)
-	 hitRate: 100,
+	 hitRate: 0,
 });
 
 window.selecto = selecto;

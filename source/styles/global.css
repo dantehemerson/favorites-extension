@@ -3,8 +3,14 @@
 
 .sortable-grid-ghost-class {
   background: #d0dbf0b0;
+  visibility: hidden;
 }
 
 .sortable-grid-selected-class {
   background: yellow;
+}
+
+.folder-hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
