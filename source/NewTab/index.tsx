@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 
 import NewTab from './NewTab';
 import '../styles/global.css';
+import './NewTab.css';
 
 const container = document.getElementById('root');
 

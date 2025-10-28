@@ -30,6 +30,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-sortablejs": "^6.1.4",
+    "selecto": "^1.26.3",
     "sortablejs": "1.15.6",
     "webextension-polyfill": "^0.12.0"
   },

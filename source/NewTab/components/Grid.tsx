@@ -35,26 +35,23 @@ export function Grid() {
     { id: 17, name: "panda" },
   ]);
 
+  // console.log('STATE', state)
+
   return (
     <ReactSortable
       multiDrag={true}
       selectedClass="sortable-grid-selected-class"
       list={state}
+      id="grid-container"
       setList={setState}
       animation={150}
       ghostClass="sortable-grid-ghost-class"
     >
       {state.map((item) => (
         <div
-          onClick={(event) => {
-            console.log("clicked", item.id);
-            event.preventDefault();
-            event.stopPropagation();
-            console.log("event", event);
-          }}
           className={clsx(
             "w-15 h-15 bg-blue-500 inline-block m-2",
-            item.id === 1 ? "sortable-grid-selected-class" : undefined
+            "favorite"
           )}
           key={item.id}
         >

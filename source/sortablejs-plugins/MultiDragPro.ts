@@ -1,5 +1,34 @@
 // @ts-nocheck
 import Sortable from 'sortablejs';
+import Selecto from 'selecto';
+
+const selecto = new Selecto({
+   // The container to add a selection element
+	 container: document.body,
+	 // Selecto's root container (No transformed container. (default: null)
+	 rootContainer: null,
+	 // The area to drag selection element (default: container)
+	//  dragContainer: Element,
+	 // Targets to select. You can register a queryselector or an Element.
+	 selectableTargets: [".favorite"],
+	 // Whether to select by click (default: true)
+	 selectByClick: false,
+	 // Whether to select from the target inside (default: true)
+	 selectFromInside: false,
+	 // After the select, whether to select the next target with the selected target (deselected if the target is selected again).
+	 continueSelect: false,
+
+	//  clickBySelectEnd: false,
+	 // Determines which key to continue selecting the next target via keydown and keyup.
+	 toggleContinueSelect: "shift",
+	 // The container for keydown and keyup events
+	 keyContainer: window,
+	 // The rate at which the target overlaps the drag area to be selected. (default: 100)
+	 hitRate: 100,
+});
+
+window.selecto = selecto;
+
 
 const {
 	toggleClass,
@@ -28,6 +57,22 @@ let multiDragElements = [],
 	clonesFromRect,
 	clonesHidden;
 
+window.multi = {
+	multiDragElements,
+	multiDragClones,
+	lastMultiDragSelect,
+	// multiDragSortable,
+	// initialFolding,
+	// folding,
+	// dragStarted,
+	// dragEl,
+	// clonesFromRect,
+}
+
+function writeItemsTextInner(elements) {
+	return elements.map(element => element.textContent);
+}
+
 function MultiDragPlugin() {
 	function MultiDrag(sortable) {
 		// Bind all private methods
@@ -45,6 +90,8 @@ function MultiDragPlugin() {
 				on(document, 'touchend', this._deselectMultiDrag);
 			}
 		}
+
+		window.multiDrag = this;
 
 		on(document, 'keydown', this._checkKeyDown);
 		on(document, 'keyup', this._checkKeyUp);
@@ -65,6 +112,50 @@ function MultiDragPlugin() {
 				dataTransfer.setData('Text', data);
 			}
 		};
+
+		selecto.on('select', e => {
+			e.added.forEach(dragEl => {
+				toggleClass(dragEl, this.options.selectedClass, true);
+			})
+
+			e.removed.forEach(dragEl => {
+				toggleClass(dragEl, this.options.selectedClass, false);
+			})
+		})
+
+		selecto.on('selectEnd', e => {
+			console.log("Previous selected elements", writeItemsTextInner(multiDragElements))
+			console.log("Items to Be Added", writeItemsTextInner(e.added))
+			console.log("Items to Be Removed", writeItemsTextInner(e.removed))
+
+			e.added.forEach(dragEl => {
+				toggleClass(dragEl, this.options.selectedClass, true);
+				multiDragElements.push(dragEl); // TODO: REview this variable
+				lastMultiDragSelect = null;
+				dispatchEvent({
+					sortable,
+					rootEl: this.sortable.el,
+					name: 'select',
+					targetEl: dragEl,
+				});
+			})
+
+			e.removed.forEach(dragEl => {
+				if (multiDragElements.includes(dragEl)) {
+					toggleClass(dragEl, this.options.selectedClass, false);
+					multiDragElements.splice(multiDragElements.indexOf(dragEl), 1);
+					lastMultiDragSelect = null;
+					dispatchEvent({
+						sortable,
+						rootEl: this.sortable.el,
+						name: 'deselect',
+						targetEl: dragEl,
+					});
+				}
+			})
+
+			console.log("New selected elements", writeItemsTextInner(multiDragElements))
+		})
 	}
 
 	MultiDrag.prototype = {
@@ -472,6 +563,13 @@ function MultiDragPlugin() {
 			this.isMultiDrag =
 			dragStarted = false;
 			multiDragClones.length = 0;
+
+			// TODO: Temp fix to unselect on drop.
+			// setTimeout(() => {
+			// 	this._deselectMultiDrag(new MouseEvent('mouseup', {
+			// 		button: 0
+			// 	}))
+			// }, 50);
 		},
 
 		destroyGlobal() {
