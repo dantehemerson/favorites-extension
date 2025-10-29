@@ -1,5 +1,6 @@
 import browser from "webextension-polyfill";
 import { Bookmark, BookmarkType } from "../../interfaces/bookmark.inteface";
+import querystring from 'query-string'
 
 export function getBookmarkType(
   bookmark: browser.Bookmarks.BookmarkTreeNode
@@ -97,4 +98,11 @@ export async function getPathToBookmark(bookmarkId: string): Promise<Bookmark[]>
 
     return [];
   }
+}
+
+export function getCurrentFolderId() {
+  // Get from the URL hash
+  let folderId = querystring.parse(location.hash).folderId as string;
+
+  return folderId ?? "1";
 }
