@@ -1,5 +1,6 @@
 {
 	"extends": "@abhijithvijayan/tsconfig",
+
 	"compilerOptions": {
 		/* Let Vite control the final JS output */
 		"target": "ESNext",
@@ -12,12 +13,16 @@
 			"ES2023"
 		],
 
+		"baseUrl": ".",
+		"paths": {
+			"@/components/*": ["source/components/*"],
+			"@/lib/*": ["source/lib/*"]
+		},
+
 		/* Bundler-specific settings */
 		"moduleResolution": "bundler",
 		"isolatedModules": true,
 		"declaration": false
 	},
-	"include": [
-		"source"
-	]
+	"include": ["source"]
 }

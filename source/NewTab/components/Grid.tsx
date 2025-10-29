@@ -23,42 +23,43 @@ export function Grid({ bookmarks, setBookmarks }: GridProps) {
       list={bookmarks}
       id="grid-container"
       setList={setBookmarks}
+      className="text-center"
       swapThreshold={1}
       animation={150}
-      onMove={(evt: any) => {
-        const target = evt.related;
-        // Pointer position:
-        console.log(
-          "Pointer position: ",
-          evt.originalEvent.clientX,
-          evt.originalEvent.clientY
-        );
+      // onMove={(evt: any) => {
+      //   const target = evt.related;
+      //   // Pointer position:
+      //   console.log(
+      //     "Pointer position: ",
+      //     evt.originalEvent.clientX,
+      //     evt.originalEvent.clientY
+      //   );
 
-        if (target.classList.contains("folder")) {
-          console.log("willInserAfter", evt.willInsertAfter);
-          console.log("IS INSIDEEEEEEEEE");
-          // Example custom logic: require dragged element to overlap 70% of folder to allow drop
+      //   if (target.classList.contains("folder")) {
+      //     console.log("willInserAfter", evt.willInsertAfter);
+      //     console.log("IS INSIDEEEEEEEEE");
+      //     // Example custom logic: require dragged element to overlap 70% of folder to allow drop
 
-          const mouseX = evt.originalEvent.clientX;
-          const mouseY = evt.originalEvent.clientY;
+      //     const mouseX = evt.originalEvent.clientX;
+      //     const mouseY = evt.originalEvent.clientY;
 
-          const rect = target.getBoundingClientRect();
+      //     const rect = target.getBoundingClientRect();
 
-          drawVerticalDebugLines(rect.left, rect.right);
+      //     drawVerticalDebugLines(rect.left, rect.right);
 
-          const thresshold = 20; /// in pixels
+      //     const thresshold = 20; /// in pixels
 
-          target.classList.add("folder-hover");
+      //     target.classList.add("folder-hover");
 
-          return false;
-        } else {
-          document
-            .querySelectorAll(".folder-hover")
-            .forEach((el) => el.classList.remove("folder-hover"));
+      //     return false;
+      //   } else {
+      //     document
+      //       .querySelectorAll(".folder-hover")
+      //       .forEach((el) => el.classList.remove("folder-hover"));
 
-          return true;
-        }
-      }}
+      //     return true;
+      //   }
+      // }}
       onEnd={() => {
         // Clean up the visual effect after drop
         document.querySelectorAll(".folder.folder-hover").forEach((el) => {
