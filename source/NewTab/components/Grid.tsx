@@ -19,6 +19,7 @@ export function Grid({ bookmarks, setBookmarks }: GridProps) {
   return (
     <ReactSortable
       multiDrag={true}
+      // multiDragKey="ctrl"
       selectedClass="sortable-grid-selected-class"
       list={bookmarks}
       id="grid-container"

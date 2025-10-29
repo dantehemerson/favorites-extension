@@ -1,3 +1,8 @@
+/**
+ * IMPORTANT: This file is copied from sortablejs/plugins/MultiDrag/MultiDrag.js
+ * version(exactly):  "sortablejs": "1.15.6" and modified as per our needs.
+*/
+
 // @ts-nocheck
 import Sortable from 'sortablejs';
 import Selecto from 'selecto';
@@ -394,6 +399,7 @@ function MultiDragPlugin() {
 		},
 
 		drop({ originalEvent: evt, rootEl, parentEl, sortable, dispatchSortableEvent, oldIndex, putSortable }) {
+
 			let toSortable = (putSortable || this.sortable);
 
 			if (!evt) return;
@@ -406,75 +412,81 @@ function MultiDragPlugin() {
 				if (options.multiDragKey && !this.multiDragKeyDown) {
 					this._deselectMultiDrag();
 				}
-				toggleClass(dragEl, options.selectedClass, !~multiDragElements.indexOf(dragEl));
 
-				if (!~multiDragElements.indexOf(dragEl)) {
-					multiDragElements.push(dragEl);
-					dispatchEvent({
-						sortable,
-						rootEl,
-						name: 'select',
-						targetEl: dragEl,
-						originalEvent: evt
-					});
+				// Avoid selecting items on click when no items are selected yet.
+				const atLeastOneItemSelected = multiDragElements.length >= 1;
 
-					// Modifier activated, select from last to dragEl
-					if (evt.shiftKey && lastMultiDragSelect && sortable.el.contains(lastMultiDragSelect)) {
-						let lastIndex = index(lastMultiDragSelect),
-							currentIndex = index(dragEl);
+				if (atLeastOneItemSelected) {
+					toggleClass(dragEl, options.selectedClass, !~multiDragElements.indexOf(dragEl));
 
-						if (~lastIndex && ~currentIndex && lastIndex !== currentIndex) {
-							// Must include lastMultiDragSelect (select it), in case modified selection from no selection
-							// (but previous selection existed)
-							let n, i;
-							if (currentIndex > lastIndex) {
-								i = lastIndex;
-								n = currentIndex;
-							} else {
-								i = currentIndex;
-								n = lastIndex + 1;
+					if (!~multiDragElements.indexOf(dragEl)) {
+						multiDragElements.push(dragEl);
+						dispatchEvent({
+							sortable,
+							rootEl,
+							name: 'select',
+							targetEl: dragEl,
+							originalEvent: evt
+						});
+
+						// Modifier activated, select from last to dragEl
+						if (evt.shiftKey && lastMultiDragSelect && sortable.el.contains(lastMultiDragSelect)) {
+							let lastIndex = index(lastMultiDragSelect),
+								currentIndex = index(dragEl);
+
+							if (~lastIndex && ~currentIndex && lastIndex !== currentIndex) {
+								// Must include lastMultiDragSelect (select it), in case modified selection from no selection
+								// (but previous selection existed)
+								let n, i;
+								if (currentIndex > lastIndex) {
+									i = lastIndex;
+									n = currentIndex;
+								} else {
+									i = currentIndex;
+									n = lastIndex + 1;
+								}
+
+								const filter = options.filter;
+
+								for (; i < n; i++) {
+									if (~multiDragElements.indexOf(children[i])) continue;
+									// Check if element is draggable
+									if (!closest(children[i], options.draggable, parentEl, false)) continue;
+									// Check if element is filtered
+									const filtered = filter && (typeof filter === 'function' ?
+										filter.call(sortable, evt, children[i], sortable) :
+										filter.split(',').some((criteria) => {
+											return closest(children[i], criteria.trim(), parentEl, false);
+										}));
+									if (filtered) continue;
+									toggleClass(children[i], options.selectedClass, true);
+									multiDragElements.push(children[i]);
+
+									dispatchEvent({
+										sortable,
+										rootEl,
+										name: 'select',
+										targetEl: children[i],
+										originalEvent: evt
+									});
+								}
 							}
-
-							const filter = options.filter;
-
-							for (; i < n; i++) {
-								if (~multiDragElements.indexOf(children[i])) continue;
-								// Check if element is draggable
-								if (!closest(children[i], options.draggable, parentEl, false)) continue;
-								// Check if element is filtered
-								const filtered = filter && (typeof filter === 'function' ?
-									filter.call(sortable, evt, children[i], sortable) :
-									filter.split(',').some((criteria) => {
-										return closest(children[i], criteria.trim(), parentEl, false);
-									}));
-								if (filtered) continue;
-								toggleClass(children[i], options.selectedClass, true);
-								multiDragElements.push(children[i]);
-
-								dispatchEvent({
-									sortable,
-									rootEl,
-									name: 'select',
-									targetEl: children[i],
-									originalEvent: evt
-								});
-							}
+						} else {
+							lastMultiDragSelect = dragEl;
 						}
-					} else {
-						lastMultiDragSelect = dragEl;
-					}
 
-					multiDragSortable = toSortable;
-				} else {
-					multiDragElements.splice(multiDragElements.indexOf(dragEl), 1);
-					lastMultiDragSelect = null;
-					dispatchEvent({
-						sortable,
-						rootEl,
-						name: 'deselect',
-						targetEl: dragEl,
-						originalEvent: evt
-					});
+						multiDragSortable = toSortable;
+					} else {
+						multiDragElements.splice(multiDragElements.indexOf(dragEl), 1);
+						lastMultiDragSelect = null;
+						dispatchEvent({
+							sortable,
+							rootEl,
+							name: 'deselect',
+							targetEl: dragEl,
+							originalEvent: evt
+						});
+					}
 				}
 			}
 
