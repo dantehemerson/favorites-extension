@@ -1,13 +1,23 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin '@tailwindcss/forms';
 
 .sortable-grid-ghost-class {
-  background: #d0dbf0b0;
   visibility: hidden;
 }
 
-.sortable-grid-selected-class {
-  background: yellow;
+.sortable-grid-selected-class .bookmark-container {
+  /* From https://css.glass */
+  background: rgba(107, 194, 226, 0.45);
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(107, 194, 226, 0.44);
+}
+
+.sortable-grid-selected-class .bookmark-name {
+  color: white;
+  background: #015ad0;
 }
 
 .folder-hover {
