@@ -8,15 +8,12 @@ import {
 } from "./utils/bookmarks.utils";
 import { FolderBreadcrumbs } from "./components/FolderBreadcrumbs";
 
-let cache = {};
-
 function NewTab() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [pathToBookmark, setPathToBookmark] = useState<Bookmark[]>([]);
 
   useEffect(() => {
     console.log("getting bookmarks tree", getCurrentFolderId());
-
 
     const initialLoad = async () => {
       const folderId = getCurrentFolderId();

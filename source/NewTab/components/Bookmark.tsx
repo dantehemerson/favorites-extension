@@ -1,8 +1,24 @@
-import React from "react";
-import { Bookmark as BookmarkType } from "../../interfaces/bookmark.inteface";
 import clsx from "clsx";
+import React from "react";
+import { Bookmark } from "../../interfaces/bookmark.inteface";
 
-export function BookmarkComponent({ bookmark }: { bookmark: BookmarkType }) {
+type BookmarkComponentProps = {
+  bookmark: Bookmark;
+  onClick: (
+    bookmark: Bookmark,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => void;
+  onAuxClick: (
+    bookmark: Bookmark,
+    event: React.MouseEvent<HTMLDivElement>
+  ) => void;
+};
+
+export function BookmarkComponent({
+  bookmark,
+  onClick,
+  onAuxClick,
+}: BookmarkComponentProps) {
   return (
     <div
       className={clsx(
@@ -17,6 +33,16 @@ export function BookmarkComponent({ bookmark }: { bookmark: BookmarkType }) {
           "w-full h-full flex flex-col items-center justify-center cursor-pointer p-2",
           "border border-transparent"
         )}
+        onClick={(event) => {
+          onClick(bookmark, event);
+          event.stopPropagation();
+          event.preventDefault();
+        }}
+        onAuxClick={(event) => {
+          onAuxClick(bookmark, event);
+          event.stopPropagation();
+          event.preventDefault();
+        }}
       >
         <img
           src={`https://www.google.com/s2/favicons?domain=${bookmark.url}&sz=64`}

@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Sortable from "sortablejs";
 
 import { Bookmark } from "../../interfaces/bookmark.inteface";
 import MultiDragPro from "../../sortablejs-plugins/MultiDragPro";
 import { BookmarkComponent } from "./Bookmark";
+import { settingsUtils } from "../utils/settings.utils";
+import { browserUtils } from "../utils/browser.utils";
+import { bookmarksUtils } from "../utils/bookmarks.utils";
 
 // @ts-ignore
 Sortable.mount(new MultiDragPro());
@@ -15,11 +18,40 @@ type GridProps = {
 };
 
 export function Grid({ bookmarks, setBookmarks }: GridProps) {
-  console.log(bookmarks);
+  const onClickBookmark = useCallback(
+    (bookmark: Bookmark, event: React.MouseEvent<HTMLDivElement>) => {
+      if (bookmark.type === "bookmark") {
+        if (bookmarksUtils.isValidBookmarkUrlToOpen(bookmark.url)) {
+          if (event.ctrlKey || event.metaKey) {
+            browserUtils.openInNewTab(bookmark.url!);
+          } else if (event.shiftKey) {
+            browserUtils.openInNewWindow(bookmark.url!);
+          } else {
+            if (settingsUtils.get("open-bookmarks-in-new-tab")) {
+              browserUtils.openInNewTab(bookmark.url!, true);
+            } else {
+              browserUtils.openInCurrentTab(bookmark.url!);
+            }
+          }
+        }
+      } else {
+        location.hash = `#folderId=${bookmark.id}`;
+      }
+    },
+    []
+  );
+
+  const onAuxClickBookmark = useCallback((bookmark: Bookmark) => {
+    if (bookmark.type === "bookmark") {
+      if (bookmark.url) {
+        browserUtils.openInNewTab(bookmark.url);
+      }
+    }
+  }, []);
+
   return (
     <ReactSortable
       multiDrag={true}
-      // multiDragKey="ctrl"
       selectedClass="sortable-grid-selected-class"
       list={bookmarks}
       id="grid-container"
@@ -70,7 +102,12 @@ export function Grid({ bookmarks, setBookmarks }: GridProps) {
       ghostClass="sortable-grid-ghost-class"
     >
       {bookmarks.map((bookmark) => (
-        <BookmarkComponent key={bookmark.id} bookmark={bookmark} />
+        <BookmarkComponent
+          key={bookmark.id}
+          bookmark={bookmark}
+          onClick={onClickBookmark}
+          onAuxClick={onAuxClickBookmark}
+        />
       ))}
     </ReactSortable>
   );

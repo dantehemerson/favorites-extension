@@ -1,6 +1,6 @@
 import browser from "webextension-polyfill";
 import { Bookmark, BookmarkType } from "../../interfaces/bookmark.inteface";
-import querystring from 'query-string'
+import querystring from "query-string";
 
 export function getBookmarkType(
   bookmark: browser.Bookmarks.BookmarkTreeNode
@@ -79,7 +79,9 @@ export async function getBookmarkById(
  * @param bookmarkId - The id of the bookmark to get the path to. Usually a folder id.
  * @returns The path to the bookmark.
  */
-export async function getPathToBookmark(bookmarkId: string): Promise<Bookmark[]> {
+export async function getPathToBookmark(
+  bookmarkId: string
+): Promise<Bookmark[]> {
   const path: Bookmark[] = [];
   let currentId: string | undefined = bookmarkId;
 
@@ -106,3 +108,11 @@ export function getCurrentFolderId() {
 
   return folderId ?? "1";
 }
+
+export function isValidBookmarkUrlToOpen(url?: string) {
+  return !!url;
+}
+
+export const bookmarksUtils = {
+  isValidBookmarkUrlToOpen,
+};
