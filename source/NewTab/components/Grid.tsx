@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { ReactSortable } from "react-sortablejs";
 import Sortable from "sortablejs";
 
@@ -18,14 +18,20 @@ type GridProps = {
 };
 
 export function Grid({ bookmarks, setBookmarks }: GridProps) {
+  const isAtLeastOneBookmarkSelected = useMemo(() => {
+    return bookmarks.some((bookmark) => bookmark.selected);
+  }, [bookmarks]);
+
   const onClickBookmark = useCallback(
     (bookmark: Bookmark, event: React.MouseEvent<HTMLDivElement>) => {
       if (bookmark.type === "bookmark") {
         if (bookmarksUtils.isValidBookmarkUrlToOpen(bookmark.url)) {
           if (event.ctrlKey || event.metaKey) {
-            browserUtils.openInNewTab(bookmark.url!);
+            if (!isAtLeastOneBookmarkSelected)
+              browserUtils.openInNewTab(bookmark.url!);
           } else if (event.shiftKey) {
-            browserUtils.openInNewWindow(bookmark.url!);
+            if (!isAtLeastOneBookmarkSelected)
+              browserUtils.openInNewWindow(bookmark.url!);
           } else {
             if (settingsUtils.get("open-bookmarks-in-new-tab")) {
               browserUtils.openInNewTab(bookmark.url!, true);
@@ -35,10 +41,20 @@ export function Grid({ bookmarks, setBookmarks }: GridProps) {
           }
         }
       } else {
+        const isSelectKeyPressed =
+          event.ctrlKey || event.metaKey || event.shiftKey;
+
+        const shouldSkipRedirectToSelect =
+          isSelectKeyPressed && isAtLeastOneBookmarkSelected;
+
+        if (shouldSkipRedirectToSelect) {
+          return;
+        }
+
         location.hash = `#folderId=${bookmark.id}`;
       }
     },
-    []
+    [isAtLeastOneBookmarkSelected]
   );
 
   const onAuxClickBookmark = useCallback((bookmark: Bookmark) => {
