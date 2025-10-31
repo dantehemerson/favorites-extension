@@ -3,7 +3,6 @@
   "__firefox__manifest_version": 2,
   "name": "Sample WebExtension",
   "version": "0.0.0",
-
   "icons": {
     "16": "assets/icons/favicon-16.png",
     "32": "assets/icons/favicon-32.png",
@@ -13,22 +12,17 @@
   "description": "Sample description",
   "homepage_url": "https://github.com/abhijithvijayan/web-extension-starter",
   "short_name": "Sample Name",
-
   "__chrome__permissions": [
     "activeTab",
     "storage",
     "bookmarks",
     "scripting"
   ],
-
   "__chrome__optional_permissions": [],
-
   "__chrome__host_permissions": [],
-
   "__chrome__optional_host_permissions": [
     "*://*/*"
   ],
-
   "__firefox__permissions": [
     "activeTab",
     "storage",
@@ -36,22 +30,17 @@
     "scripting",
     "*://*/*"
   ],
-
   "__chrome__content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
   },
   "__firefox__content_security_policy": "script-src 'self'; object-src 'self'",
-
   "__chrome|firefox__author": "abhijithvijayan",
-
   "__firefox__applications": {
     "gecko": {
       "id": "{754FB1AD-CC3B-4856-B6A0-7786F8CA9D17}"
     }
   },
-
   "__chrome__minimum_chrome_version": "88",
-
   "__chrome__action": {
     "default_icon": {
       "16": "assets/icons/favicon-16.png",
@@ -61,7 +50,6 @@
     },
     "default_title": "tiny title"
   },
-
   "__firefox__browser_action": {
     "default_icon": {
       "16": "assets/icons/favicon-16.png",
@@ -72,8 +60,6 @@
     "default_title": "tiny title",
     "browser_style": false
   },
-
-
   "background": {
     "__chrome__service_worker": "assets/js/background.bundle.js",
     "__chrome__type": "module",
@@ -81,7 +67,6 @@
       "assets/js/background.bundle.js"
     ]
   },
-
   "content_scripts": [
     {
       "run_at": "document_start",
@@ -95,18 +80,19 @@
       ]
     }
   ],
-
   "__firefox__web_accessible_resources": [
     "assets/*"
   ],
-
   "__chrome__web_accessible_resources": [
     {
-      "resources": [ "assets/*" ],
-      "matches": [ "https://*/*" ]
+      "resources": [
+        "assets/*"
+      ],
+      "matches": [
+        "https://*/*"
+      ]
     }
   ],
-
   "chrome_url_overrides": {
     "newtab": "NewTab/newtab.html"
   }
