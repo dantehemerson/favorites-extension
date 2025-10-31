@@ -22,7 +22,7 @@ export function BookmarkComponent({
   return (
     <div
       className={clsx(
-        "w-[100px] h-[130px] inline-block m-4 align-top",
+        `w-[var(--bookmark-width)] h-[var(--bookmark-height)] inline-block align-top`,
         "favorite",
         bookmark.type === "folder" && "folder"
       )}
@@ -30,7 +30,7 @@ export function BookmarkComponent({
       <div
         className={clsx(
           "bookmark-container",
-          "w-full h-full flex flex-col items-center justify-center cursor-pointer p-2",
+          "w-full h-full flex flex-col items-center justify-center cursor-pointer p-2 m-2",
           "border border-transparent"
         )}
         onClick={(event) => {

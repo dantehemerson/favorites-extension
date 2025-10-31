@@ -17,4 +17,8 @@ html, body {
 
 :root {
   --bookmark-icon-size: 80px;
+  --bookmark-width: 140px;
+  --bookmark-height: 180px;
+  --bookmarks-max-items-per-row: 8;
 }
+

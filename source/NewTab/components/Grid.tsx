@@ -8,6 +8,7 @@ import { BookmarkComponent } from "./Bookmark";
 import { settingsUtils } from "../utils/settings.utils";
 import { browserUtils } from "../utils/browser.utils";
 import { bookmarksUtils } from "../utils/bookmarks.utils";
+import clsx from "clsx";
 
 // @ts-ignore
 Sortable.mount(new MultiDragPro());
@@ -72,7 +73,10 @@ export function Grid({ bookmarks, setBookmarks }: GridProps) {
       list={bookmarks}
       id="grid-container"
       setList={setBookmarks}
-      className="text-center"
+      className={clsx(
+        "max-w-[calc(var(--bookmark-width)*var(--bookmarks-max-items-per-row))] mx-auto",
+        "text-center"
+      )}
       swapThreshold={1}
       animation={150}
       // onMove={(evt: any) => {
