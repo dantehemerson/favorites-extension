@@ -22,7 +22,7 @@ export function BookmarkComponent({
   return (
     <div
       className={clsx(
-        `w-[var(--bookmark-width)] h-[var(--bookmark-height)] inline-block align-top`,
+        `w-[var(--bookmark-width)] h-[var(--bookmark-height)] inline-block align-top m-4`,
         "favorite",
         bookmark.type === "folder" && "folder"
       )}
