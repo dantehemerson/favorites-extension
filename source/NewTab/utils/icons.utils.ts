@@ -88,14 +88,23 @@ async function getIconFromHTML(
 
 function generateDefaultIcon(pageUrl: string): { sizes: string; href: string } {
   const textColor = "#ffffff";
-  const backgroundColor = colorHash.hsl(pageUrl);
+  const backgroundColor = colorHash.hex(pageUrl);
+  const radius = "8px";
 
   const firstLetter = urlUtils.getFirstLetterFromDomain(pageUrl);
 
   const svgContent = `
     <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-      <rect width="100%" height="100%" fill="hsl(${backgroundColor[0]}, ${backgroundColor[1]}, ${backgroundColor[2]})"/>
-      <text x="50%" y="50%" font-size="48" text-anchor="middle" dominant-baseline="middle" fill="${textColor}">${firstLetter}</text>
+      <rect width="100%" height="100%" fill="${backgroundColor}" rx="${radius}" ry="${radius}" />
+      <text
+        x="50%"
+        y="50%"
+        font-size="48"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        fill="${textColor}"
+        font-family="sans-serif"
+      >${firstLetter}</text>
     </svg>
   `;
 

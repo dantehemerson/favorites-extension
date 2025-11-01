@@ -27,12 +27,21 @@ function NewTab() {
       setBookmarks(bookmarks);
       setPathToBookmark(pathToBookmark);
 
-      bookmarks.forEach(async (bookmark) => {
-        if (bookmark.type === "bookmark" && bookmark.url) {
-          const icon = await iconsUtils.get(bookmark.url!);
-          console.log("icon for", bookmark.name, icon);
-        }
-      });
+      const newBookmarksWithIcons = await Promise.all(
+        bookmarks.map(async (bookmark) => {
+          if (bookmark.type === "bookmark" && bookmark.url) {
+            const icon = await iconsUtils.get(bookmark.url!);
+
+            return {
+              ...bookmark,
+              icon: icon.href,
+            };
+          }
+          return bookmark;
+        })
+      );
+
+      setBookmarks(newBookmarksWithIcons);
     };
 
     initialLoad();

@@ -8,4 +8,5 @@ export interface Bookmark {
   url?: string;
   parentId?: string;
   children?: Bookmark[];
+  icon?: string;
 }

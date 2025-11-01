@@ -16,5 +16,6 @@ declare module "color-hash" {
     );
 
     hsl(str: string): [number, number, number];
+    hex(str: string): string;
   }
 }
