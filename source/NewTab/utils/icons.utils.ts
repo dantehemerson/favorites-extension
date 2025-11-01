@@ -11,7 +11,7 @@ type PageResponse = {
 let imagesDB: IDBPDatabase;
 let colorHash = new ColorHash({
   lightness: 0.5,
-  saturation: 0.54,
+  saturation: 0.25,
 });
 
 export async function getImagesDB(): Promise<IDBPDatabase> {
@@ -102,6 +102,7 @@ function generateDefaultIcon(pageUrl: string): { sizes: string; href: string } {
         font-size="48"
         text-anchor="middle"
         dominant-baseline="middle"
+        dy="4px"
         fill="${textColor}"
         font-family="sans-serif"
       >${firstLetter}</text>
