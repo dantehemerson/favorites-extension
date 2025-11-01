@@ -45,7 +45,13 @@ export function BookmarkComponent({
         }}
       >
         <img
-          src={`https://www.google.com/s2/favicons?domain=${bookmark.url}&sz=64`}
+          src={
+            bookmark.type === "bookmark" && bookmark.url
+              ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(
+                  bookmark.url!
+                )}&sz=64`
+              : "https://i.postimg.cc/bJ2pdR5V/macos-big-sur-folder-icon-186046.png"
+          }
           className="w-[var(--bookmark-icon-size)] h-[var(--bookmark-icon-size)]"
           alt={bookmark.name}
         />

@@ -7,6 +7,7 @@ import {
   getPathToBookmark,
 } from "./utils/bookmarks.utils";
 import { FolderBreadcrumbs } from "./components/FolderBreadcrumbs";
+import { iconsUtils } from "./utils/icons.utils";
 
 function NewTab() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
@@ -18,13 +19,20 @@ function NewTab() {
     const initialLoad = async () => {
       const folderId = getCurrentFolderId();
 
-      const bookmarks = await Promise.all([
+      const [bookmarks, pathToBookmark] = await Promise.all([
         getBookmarksTreeById(folderId),
         getPathToBookmark(folderId),
       ]);
 
-      setBookmarks(bookmarks[0]);
-      setPathToBookmark(bookmarks[1]);
+      setBookmarks(bookmarks);
+      setPathToBookmark(pathToBookmark);
+
+      bookmarks.forEach(async (bookmark) => {
+        if (bookmark.type === "bookmark" && bookmark.url) {
+          const icon = await iconsUtils.get(bookmark.url!);
+          console.log("icon for", bookmark.name, icon);
+        }
+      });
     };
 
     initialLoad();
